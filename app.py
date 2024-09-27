@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import csv
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 
 # Function to read URLs from the CSV file
 def read_urls_from_csv(file_path):
