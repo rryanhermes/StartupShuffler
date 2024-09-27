@@ -12,7 +12,7 @@
             <span class="welcome">Welcome! 10,000+ seed & pre-seed startups for</span>
             <span class="doom"> Doomscrolling...</span>
         </h2>
-        <h6 class="subtitle">Use the arrows on the right to navigate between startups. If a company doesn't load, click "🔗" to open in a new tab</h6>
+        <h6 class="subtitle">Use the button on the right to load a new startup. If a company doesn't load, click "🔗" to open in a new tab</h6>
         <button class="close-button" onclick="closeBanner()">✖</button>
     </div>
 
@@ -22,13 +22,13 @@
 
     <div class="arrow-buttons">
         <button class="open-link-button" onclick="openInNewTab()">🔗</button>
-        <button class="arrow-button up-button" onclick="scrollUp()">▲</button>
-        <button class="arrow-button down-button" onclick="scrollDown()">▼</button>
+        <button class="shuffle-button" onclick="skipToNext()">🔀</button>
     </div>
 
     <script>
         const data = {{ data | tojson }};
         let currentIndex = -1;  // Start with an invalid index
+        let loadTimeout;  // Variable to store the timeout
     
         function formatURL(url) {
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -42,6 +42,12 @@
             currentIndex = Math.floor(Math.random() * data.length);
             const iframe = document.getElementById("embedded-frame");
             iframe.src = formatURL(data[currentIndex].Website);
+    
+            // Set a timeout to check for loading issues
+            loadTimeout = setTimeout(() => {
+                console.log("Loading timeout. Skipping to the next website.");
+                skipToNext();
+            }, 5000);  // 5 seconds timeout
         }
     
         function openInNewTab() {
@@ -60,14 +66,6 @@
             updateIframe();
         }
     
-        function scrollUp() {
-            skipToNext();  // Random selection instead of scrolling up
-        }
-    
-        function scrollDown() {
-            skipToNext();  // Random selection instead of scrolling down
-        }
-    
         function closeBanner() {
             document.getElementById('banner').style.display = 'none';
         }
@@ -79,13 +77,15 @@
         const iframe = document.getElementById("embedded-frame");
         iframe.onload = function() {
             console.log("Website loaded successfully.");
+            clearTimeout(loadTimeout);  // Clear the timeout if loaded successfully
         };
     
         iframe.onerror = function() {
-            console.log("Failed to load the website, skipping to the next one...");
+            console.log("Error loading website, skipping to the next one...");
             skipToNext();
         };
     </script>
+        
     
 </body>
 </html>

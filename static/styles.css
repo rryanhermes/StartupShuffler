@@ -73,10 +73,10 @@ iframe {
     transform: translateY(-50%);
 }
 
-.arrow-button,
-.open-link-button {
+/* Styles for the new shuffle button */
+.shuffle-button {
     cursor: pointer;
-    font-size: 40px;  /* Larger buttons */
+    font-size: 40px;  /* Larger button */
     padding: 20px;
     margin-top: 10px;
     border: none;
@@ -87,7 +87,24 @@ iframe {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.arrow-button:hover,
+.shuffle-button:hover {
+    background-color: #ff4757;  /* Hover color for background */
+    color: #ffffff;  /* White color on hover */
+}
+
+.open-link-button {
+    cursor: pointer;
+    font-size: 40px;  /* Larger button */
+    padding: 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: #ffffff;  /* White background for contrast */
+    color: #000;  /* Black button color */
+    border-radius: 20px;  /* Pill-shaped background */
+    outline: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
 .open-link-button:hover {
     background-color: #ff4757;  /* Hover color for background */
     color: #ffffff;  /* White color on hover */
@@ -111,7 +128,7 @@ iframe {
         right: 10px;  /* Keep buttons on the right side for mobile too */
     }
 
-    .arrow-button,
+    .shuffle-button,
     .open-link-button {
         font-size: 30px;  /* Slightly smaller buttons for mobile */
         padding: 15px;
