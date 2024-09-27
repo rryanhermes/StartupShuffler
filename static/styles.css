@@ -1,0 +1,119 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'system-ui', sans-serif;
+    height: 100vh;
+    margin: 0;
+    background-color: #0f0f0f;
+    overflow-x: hidden;  /* Prevent horizontal overflow on the body */
+}
+
+/* Banner styling */
+.banner {
+    background-color: #282828;  /* Dark background for the banner */
+    color: #ebebeb;  /* Light text color */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;  /* Position for the close button */
+}
+
+.banner .close-button {
+    background: none;  /* No background */
+    border: none;  /* No border */
+    color: #ebebeb;  /* White color */
+    font-size: 20px;  /* Size of the close button */
+    position: absolute;  /* Position it in the top right corner */
+    right: 10px;
+    top: 10px;
+    cursor: pointer;  /* Pointer cursor on hover */
+}
+
+.header {
+    text-align: center;
+    margin-top: 10px;  /* Reset margin */
+}
+
+.header .doom {
+    color: #e25757;
+    font-size: 25px;
+}
+
+.subtitle {
+    font-size: 15px;
+    text-align: center;
+    color: #a4a4a4;
+}
+
+/* Iframe container styling */
+.iframe-container {
+    flex: 1;
+    width: 100vw;  /* Full width */
+    height: 100vh;  /* Full height */
+    overflow: hidden;
+    border: none;  /* No border */
+    position: relative;  /* Allow positioning of buttons */
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Arrow buttons styling */
+.arrow-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;  /* Overlay the buttons */
+    right: 20px;  /* Keep buttons on the right edge */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.arrow-button,
+.open-link-button {
+    cursor: pointer;
+    font-size: 40px;  /* Larger buttons */
+    padding: 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: #ffffff;  /* White background for contrast */
+    color: #000;  /* Black button color */
+    border-radius: 20px;  /* Pill-shaped background */
+    outline: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.arrow-button:hover,
+.open-link-button:hover {
+    background-color: #ff4757;  /* Hover color for background */
+    color: #ffffff;  /* White color on hover */
+}
+
+/* Styles for smaller screens (e.g., mobile devices) */
+@media (max-width: 600px) {
+    .banner {
+        flex-direction: column;  /* Stack items */
+    }
+
+    .header {
+        font-size: 24px;  /* Adjust header size for mobile */
+    }
+
+    .subtitle {
+        font-size: 14px;  /* Adjust subtitle size for mobile */
+    }
+
+    .arrow-buttons {
+        right: 10px;  /* Keep buttons on the right side for mobile too */
+    }
+
+    .arrow-button,
+    .open-link-button {
+        font-size: 30px;  /* Slightly smaller buttons for mobile */
+        padding: 15px;
+    }
+}
