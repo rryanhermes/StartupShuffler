@@ -18,7 +18,7 @@ def generate():
     for response in responses:
         print(response.text, end="")
 
-text1 = """Extract the ORGANIZATION NAME and WEBSITE from the table in the video into a JSON format. Ensure perfect accuracy with the url\'s. The JSON should look like this: [
+text1 = """Extract the ORGANIZATION NAME and WEBSITE from the table into a JSON format. Ensure perfect accuracy with the url\'s. If an organization either doesn\'t have a website or the your can\'t extract the whole website url, don\'t include the organization. The JSON should look like this: [
   {
     \"Website\": \"https://example.com\"
   },
@@ -28,7 +28,7 @@ text1 = """Extract the ORGANIZATION NAME and WEBSITE from the table in the video
 ]"""
 video1 = Part.from_uri(
     mime_type="video/*",
-    uri="https://youtu.be/ZUzCXwDmefY",
+    uri="https://youtu.be/nWHsrtXPkzA",
 )
 
 generation_config = {
