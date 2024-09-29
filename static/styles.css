@@ -23,7 +23,7 @@ body {
     background: none;  /* No background */
     border: none;  /* No border */
     color: #ebebeb;  /* White color */
-    font-size: 20px;  /* Size of the close button */
+    font-size: 30px;  /* Size of the close button */
     position: absolute;  /* Position it in the top right corner */
     right: 10px;
     top: 10px;
