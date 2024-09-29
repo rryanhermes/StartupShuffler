@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Embedded Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script>
-        const data = {{ data | tojson }};
-    </script>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
     <div id="banner" class="banner">
@@ -28,6 +25,78 @@
         <button class="shuffle-button" onclick="skipToNext()">🔀</button>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Load the data from a static JSON file -->
+    <script>
+        let data = [];
+
+        // Fetch the company URLs from the static JSON file
+        fetch('static/data.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                data = jsonData;
+                updateIframe();  // Load the first random company when the data is loaded
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+            });
+
+        let currentIndex = -1;  // Start with an invalid index
+        let loadTimeout;  // Variable to store the timeout
+
+        function formatURL(url) {
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                return "https://" + url;
+            }
+            return url;
+        }
+
+        function updateIframe() {
+            // Generate a random index
+            currentIndex = Math.floor(Math.random() * data.length);
+            const iframe = document.getElementById("embedded-frame");
+            iframe.src = formatURL(data[currentIndex].Website);
+
+            // Set a timeout to check for loading issues
+            loadTimeout = setTimeout(() => {
+                console.log("Loading timeout. Skipping to the next website.");
+                skipToNext();
+            }, 5000);  // 5 seconds timeout
+        }
+
+        function openInNewTab() {
+            const iframe = document.getElementById("embedded-frame");
+            const url = iframe.src;
+            if (url) {
+                window.open(url, "_blank");
+            } else {
+                alert("No website loaded to open.");
+            }
+        }
+
+        function skipToNext() {
+            // Generate a new random index
+            currentIndex = Math.floor(Math.random() * data.length);
+            updateIframe();
+        }
+
+        function closeBanner() {
+            document.getElementById('banner').style.display = 'none';
+        }
+
+        window.onload = function() {
+            // `updateIframe` will be called once the data is fetched
+        };
+
+        const iframe = document.getElementById("embedded-frame");
+        iframe.onload = function() {
+            console.log("Website loaded successfully.");
+            clearTimeout(loadTimeout);  // Clear the timeout if loaded successfully
+        };
+
+        iframe.onerror = function() {
+            console.log("Error loading website, skipping to the next one...");
+            skipToNext();
+        };
+    </script>
 </body>
 </html>
