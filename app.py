@@ -18,8 +18,9 @@ def read_urls_from_csv(file_path):
 # Route to display the home page
 @app.route('/')
 def home():
-    data = read_urls_from_csv('companies2.csv')  # Ensure the path is correct
-    return render_template('index.html', data=data)
+    # data = read_urls_from_csv('companies.csv')  # Ensure the path is correct
+    # return render_template('index.html', data=data)
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
