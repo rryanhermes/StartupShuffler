@@ -1,5 +1,22 @@
 let currentIndex = -1;  // Start with an invalid index
 let loadTimeout;  // Variable to store the timeout
+let data = [];  // Array to hold the URLs from sites.txt
+
+// Function to fetch URLs from the sites.txt file
+function loadSites() {
+    fetch("sites.txt")
+        .then(response => response.text())
+        .then(text => {
+            // Split the file contents by new lines to get each URL
+            data = text.split("\n").map(url => url.trim()).filter(url => url);
+            if (data.length > 0) {
+                updateIframe();  // Load the first random company after loading URLs
+            } else {
+                console.error("No URLs found in sites.txt");
+            }
+        })
+        .catch(error => console.error("Error loading sites:", error));
+}
 
 function formatURL(url) {
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -12,7 +29,7 @@ function updateIframe() {
     // Generate a random index
     currentIndex = Math.floor(Math.random() * data.length);
     const iframe = document.getElementById("embedded-frame");
-    iframe.src = formatURL(data[currentIndex].Website);
+    iframe.src = formatURL(data[currentIndex]);
 
     // Set a timeout to check for loading issues
     loadTimeout = setTimeout(() => {
@@ -42,7 +59,7 @@ function closeBanner() {
 }
 
 window.onload = function() {
-    updateIframe();  // Load the first random company when the page loads
+    loadSites();  // Load URLs from sites.txt when the page loads
 };
 
 const iframe = document.getElementById("embedded-frame");

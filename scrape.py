@@ -9,7 +9,7 @@ def generate():
         "gemini-1.5-flash-002",
     )
     responses = model.generate_content(
-        [text1, video1],
+        [video1, text1],
         generation_config=generation_config,
         safety_settings=safety_settings,
         stream=True,
@@ -18,22 +18,17 @@ def generate():
     for response in responses:
         print(response.text, end="")
 
-text1 = """Extract the ORGANIZATION NAME and WEBSITE from the table into a JSON format. Ensure perfect accuracy with the url\'s. If an organization either doesn\'t have a website or the your can\'t extract the whole website url, don\'t include the organization. The JSON should look like this: [
-  {
-    \"Website\": \"https://example.com\"
-  },
-  {
-    \"Website\": \"https://another-example.com\"
-  }
-]"""
 video1 = Part.from_uri(
     mime_type="video/*",
-    uri="https://youtu.be/nWHsrtXPkzA",
+    uri="https://youtu.be/xZr_uo0Dm5A",
 )
+# https://youtu.be/xZr_uo0Dm5A
+
+text1 = """Extract all of the URL\'s from this video, and print JUST THE URL\'s one by one. Ensure each URL is properly formatted. For example, a url that reads \'xyz.com\' should be formatted as \'www.xyz.com\'."""
 
 generation_config = {
     "max_output_tokens": 8192,
-    "temperature": 1,
+    "temperature": 0.1,
     "top_p": 0.95,
 }
 
