@@ -2,22 +2,6 @@ let currentIndex = -1;  // Start with an invalid index
 let loadTimeout;  // Variable to store the timeout
 let data = [];  // Array to hold the URLs from sites.txt
 
-// Function to fetch URLs from the sites.txt file
-function loadSites() {
-    fetch("sites.txt")
-        .then(response => response.text())
-        .then(text => {
-            // Split the file contents by new lines to get each URL
-            data = text.split("\n").map(url => url.trim()).filter(url => url);
-            if (data.length > 0) {
-                updateIframe();  // Load the first random company after loading URLs
-            } else {
-                console.error("No URLs found in sites.txt");
-            }
-        })
-        .catch(error => console.error("Error loading sites:", error));
-}
-
 function formatURL(url) {
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
         return "https://" + url;
@@ -28,8 +12,26 @@ function formatURL(url) {
 function updateIframe() {
     // Generate a random index
     currentIndex = Math.floor(Math.random() * data.length);
+    const url = formatURL(data[currentIndex].Website);
     const iframe = document.getElementById("embedded-frame");
-    iframe.src = formatURL(data[currentIndex]);
+
+    // Try to load the site
+    try {
+        iframe.src = url;
+        
+        // Add error handler for X-Frame-Options issues
+        iframe.onerror = function() {
+            console.log("Website blocked iframe loading, opening in new tab...");
+            window.open(url, '_blank');
+            // Load next site in iframe
+            skipToNext();
+        };
+
+    } catch (error) {
+        console.log("Error loading website:", error);
+        window.open(url, '_blank');
+        skipToNext();
+    }
 
     // Set a timeout to check for loading issues
     loadTimeout = setTimeout(() => {
@@ -49,6 +51,7 @@ function openInNewTab() {
 }
 
 function skipToNext() {
+    clearTimeout(loadTimeout); // Clear any existing timeout
     // Generate a new random index
     currentIndex = Math.floor(Math.random() * data.length);
     updateIframe();
@@ -58,8 +61,29 @@ function closeBanner() {
     document.getElementById('banner').style.display = 'none';
 }
 
+// Add a message about sites opening in new tabs
+function addNewTabMessage() {
+    const banner = document.getElementById('banner');
+    const message = document.createElement('div');
+    message.className = 'subtitle';
+    message.style.color = '#a4a4a4';
+    message.style.fontSize = '12px';
+    message.textContent = 'Note: Some sites may open in a new tab due to security settings';
+    banner.appendChild(message);
+}
+
 window.onload = function() {
-    loadSites();  // Load URLs from sites.txt when the page loads
+    // Fetch the company URLs from the static JSON file
+    fetch('static/data.json')
+        .then(response => response.json())
+        .then(jsonData => {
+            data = jsonData;
+            updateIframe();  // Load the first random company when the data is loaded
+            addNewTabMessage(); // Add the new tab message
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
+        });
 };
 
 const iframe = document.getElementById("embedded-frame");
